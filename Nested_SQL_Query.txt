@@ -1,0 +1,51 @@
+SQL> SELECT *FROM STUDENT
+
+S_ID	S_NAME	S_ADDRESS S_PHONE	S_AGE
+S1	RAM	DELHI	  9455123451	18
+S2	RAMESH	GURGAON	  9652431543	18
+S3	SUJIT	ROHTAK	  9156253131	20
+S4	SURESH	DELHI	  9156768971	18
+ 
+
+SQL>SELECT *FROM COURSE
+
+C_ID	C_NAME
+C1	DSA
+C2	Programming
+C3	DBMS
+ 
+
+SQL>SELECT *FROM STUDENT_COURSE
+
+
+S_ID	C_ID
+S1	C1
+S1	C3
+S2	C1
+S3	C2
+S4	C2
+S4	C3
+
+
+
+=> find out S_ID who are enrolled in C_NAME ‘DSA’ or ‘DBMS’
+
+    Select S_ID from STUDENT_COURSE where C_ID IN
+    (SELECT C_ID from COURSE where C_NAME = ‘DSA’ or C_NAME=’DBMS’);
+
+=> find out names of STUDENTs who have either enrolled in ‘DSA’ or ‘DBMS’
+
+   Select S_NAME from STUDENT where S_ID IN
+   (SELECT S_ID from STUDENT_COURSE where C_ID IN
+    (SELECT C_ID from COURSE where C_NAME = 'DSA' OR C_NAME = 'DBMS'));
+
+=> find out S_IDs of STUDENTs who have neither enrolled in ‘DSA’ nor in ‘DBMS’
+
+   Select S_ID from STUDENT where S_ID NOT IN
+   (SELECT S_ID from STUDENT_COURSE where C_ID NOT IN
+    (SELECT C_ID from COURSE where C_NAME = 'DSA' or C_NAME = 'DBMS'));
+
+=> find out S_NAME of STUDENTs who are enrolled in C_ID ‘C1’
+ 
+   Select S_NAME from STUDENT S where EXISTS
+   ( select * from STUDENT_COURSE SC where S.S_ID=SC.S_ID and SC.C_ID=’C1’);
